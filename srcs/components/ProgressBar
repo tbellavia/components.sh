@@ -1,0 +1,39 @@
+#!/bin/bash
+
+_help=$(cat <<HELP
+ProgressBar [--help], [done,  target,  size,  advance,  left,  begin,  ending,  label]
+	 Parameters
+	 	:done:		the current progress depending on target 
+	 	:target:	the target number to achieve 
+	 	:size:		the size of the ProgressBar 
+	 	:advance:	the character representing the advanced into the progress bar 
+	 	:left:		the character representing the left space into the progress bar 
+	 	:begin:		the trailing character representing progress bar begin delimiter 
+	 	:ending:	the trailing character representing progress bar end delimiter 
+	 	:label:		the progress bar label 
+HELP
+)
+
+if [ "$#" == 1 ]
+then
+	if [ "$1" == "--help" ]
+	then
+		printf "$_help\n"
+	fi
+	exit 1
+fi
+
+if [ "$#" != 8 ]
+then
+	printf "$_help\n"
+	exit 1
+fi
+
+_progress=$(( ${1} * 100 / ${2} * 100 / 100 ))
+_done=$(( ${_progress} * ${3} / 10 / 10 ))
+_left=$(( ${3} - $_done ))
+
+_fill=$(printf "%${_done}s")
+_empty=$(printf "%${_left}s")
+
+printf "\r${8} : ${6}${_fill// /${4}}${_empty// /${5}}${7} ${_progress}%%"
