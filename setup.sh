@@ -45,7 +45,10 @@ case "$(basename ${SHELL})" in
 esac
 
 echo "> Adding custom bin directory to path"
-echo "export PATH=\$PATH:$target" >> "$shell_path"
+_export=
+if ! grep "export PATH=\$PATH:$target" "$shell_path"; then
+	echo "export PATH=\$PATH:$target" >> "$shell_path"
+fi
 echo ""
 echo ""
 printf "> Run following command to make changes effective : \n\tsource $shell_path\n\n"
